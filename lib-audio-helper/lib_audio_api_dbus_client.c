@@ -24,7 +24,6 @@ void audio_api_cmd_exe_callback (GObject * gobj, GAsyncResult * res, gpointer us
         printf("module not started yet, will start module first.\n");
         // to do 拉起应用
     }
-
 }
 
 void audio_api_exe_ukui_mod_cmd(char *mod)

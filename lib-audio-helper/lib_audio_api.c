@@ -24,11 +24,14 @@ int audio_api_read_module_info(char *file_path)
 
 int audio_api_init(void)
 {
+    int ret = 0;
     g_cfg_line_num = 0;
 
-    audio_api_create_task();
-    audio_api_module_info_init();
+    ret = audio_api_module_info_init();
+    if (ret) {
+        return ret;
+    }
     // 写gsettings放到dbus获得name之后，防止dbus还没有注册成功，ukui module就调用接口来注册，发生错误
     audio_api_dbus_init();
-    return 0;
+    return AUDIO_API_OK;
 }

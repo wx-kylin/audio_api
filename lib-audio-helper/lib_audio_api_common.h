@@ -23,10 +23,22 @@ struct module_info {
     int cmd_exe;
     volatile int finished;
     int need_time;
+    int exe_result;
+    char res_des[128];
     GSList *list;
 };
 
-int audio_api_create_task(void);
+struct config_info {
+    char id[8];
+    char module_name[AUDIO_API_MODULE_NAME_LEN];
+    char module_start[32];
+    // void (*api)(int);
+    // char dbus_path[128];
+    // int need_time;
+    int cmd;
+    char cmd_des[128];
+};
+
 void audio_api_display_info(GSList  *list);
 int audio_api_cmd_add(struct register_msg *msg);
 int audio_api_cmd_execution(struct register_msg *msg);

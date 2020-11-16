@@ -8,6 +8,7 @@
 #include "lib_audio_api_dbus_client.h"
 
 GSList *g_module_list = NULL;
+extern struct module_info *g_module_info;
 
 int audio_api_module_cmd_sup(char *mod, int cmd)
 {
@@ -46,18 +47,19 @@ struct module_info *audio_api_get_module(char *mod)
 int audio_api_cmd_execute(char *mod, int cmd)
 {
     struct module_info *module_info = NULL;
+    // 最多等待5ms
     int count = 5;
 
     module_info = audio_api_get_module(mod);
     if (module_info == NULL) {
         printf("module not support, mod is %s.\n", mod);
-        return -1;
+        return AUDIO_API_MODULE_NAME_NOT_SUPPORT;
     }
     module_info->cmd_exe = cmd;
     module_info->finished = 0;
     if(!audio_api_module_cmd_sup(mod, module_info->cmd_exe)) {
         printf("cmd not support, cmd is %d.\n", module_info->cmd_exe);
-        return -1;
+        return AUDIO_API_CMD_NOT_SUPPORT;
     }
     printf("audio_api_cmd_execute.\n");
     audio_api_exe_ukui_mod_cmd(mod);
@@ -66,9 +68,13 @@ int audio_api_cmd_execute(char *mod, int cmd)
     }
     if (module_info->finished == 0) {
         printf("audio_api_cmd_exe timeout.\n");
-        return -1;
+        return AUDIO_API_CMD_EXE_TIMEOUT;
+    } else {
+        if (g_module_info->exe_result != 0) {
+            return g_module_info->exe_result;
+        }
     }
-    return 0;
+    return AUDIO_API_OK;
 }
 
 void audio_api_display_info(GSList  *list) {
@@ -122,7 +128,7 @@ int audio_api_get_module_info(char *file_path)
     }
     fprintf(fp, "------------------audio_api_show_info end-----------------\n");
     fclose(fp);
-    return 0;
+    return AUDIO_API_OK;
 }
 
 int audio_api_module_name_cmp(gconstpointer str1, gconstpointer str2)
@@ -188,11 +194,11 @@ int audio_api_cmd_reg(struct cmd_register *cmd_reg)
             audio_api_update_cfg(cmd_reg, find_info->module_start);
         } else {
             printf("already have, no need to reg, cmd is %d.\n", cmd_reg->cmd);
-            return -1;
+            return AUDIO_API_CMD_EXIST;
         }
     } else {
         printf("module not support.\n");
-        return -1;
+        return AUDIO_API_MODULE_NAME_NOT_SUPPORT;
     }
     audio_api_display_info(g_module_list);
 }
@@ -214,10 +220,9 @@ int audio_api_module_reg(struct module_register *mod_reg)
         find_info->need_time = mod_reg->need_time;
     } else {
         printf("module not support.\n");
-        return -1;
+        return AUDIO_API_MODULE_NAME_NOT_SUPPORT;
     }
-    audio_api_display_info(g_module_list);
-    return 0;
+    return AUDIO_API_OK;
 }
 
 static void audio_api_add_cfg_info(struct config_info *cfg_info)
@@ -232,10 +237,7 @@ static void audio_api_add_cfg_info(struct config_info *cfg_info)
     g_cfg_line_num++;
     strcpy(tmp_module_info.module_name, cfg_info->module_name);
     find = g_slist_find_custom(g_module_list, &tmp_module_info, audio_api_module_name_cmp);
-    // printf("audio_api_add_cfg_info in\n");
     if (find == NULL) {
-        // printf("module add: %s, %s, %s, %d, %s\n", cfg_info->id, cfg_info->module_name, cfg_info->module_start, \
-            // cfg_info->cmd, cfg_info->cmd_des);
         module_info = (struct module_info *)malloc(sizeof(struct module_info));
         strcpy(module_info->module_name, cfg_info->module_name);
         strcpy(module_info->module_start, cfg_info->module_start);
@@ -247,6 +249,8 @@ static void audio_api_add_cfg_info(struct config_info *cfg_info)
         module_info->finished = 1;
         module_info->need_time = 0;
         module_info->list = NULL;
+        module_info->exe_result = -1;
+        strcpy(module_info->res_des, "\0");
         g_module_list = g_slist_insert_sorted(g_module_list, module_info, audio_api_module_name_cmp);
 
         cmd_info = (struct module_cmd_info *)malloc(sizeof(struct module_cmd_info));
@@ -254,40 +258,15 @@ static void audio_api_add_cfg_info(struct config_info *cfg_info)
         cmd_info->cmd = cfg_info->cmd;
         module_info->list = g_slist_insert_sorted(module_info->list, cmd_info, audio_api_cmd_cmp);
     } else {
-        // printf("find module, may add cmd.\n");
         tmp_cmd_info.cmd = cfg_info->cmd;
         find_info = (struct module_info *)find->data;
         find_cmd = g_slist_find_custom(find_info->list, &tmp_cmd_info, audio_api_cmd_cmp);
         if (find_cmd == NULL) {
-            // printf("cmd add:%d, %s\n", cfg_info->cmd, cfg_info->cmd_des);
             cmd_info = (struct module_cmd_info *)malloc(sizeof(struct module_cmd_info));
             cmd_info->cmd = cfg_info->cmd;
             strcpy(cmd_info->cmd_des, cfg_info->cmd_des);
             find_info->list = g_slist_insert_sorted(find_info->list, cmd_info, audio_api_cmd_cmp);
         }
-    }
-}
-
-void thread(void)
-{
-    // while(1)  {
-    //     printf("pthread in.\n");
-
-    //     sleep(1);
-    // }
-    pthread_exit(0);
-}
-
-int audio_api_create_task(void)
-{
-    pthread_t id;
-    int ret;
-
-    /*创建线程*/
-    ret = pthread_create(&id, NULL, (void *)thread, NULL);
-    if(ret != 0) {
-        printf("Create pthread error!\n");
-        return -1;
     }
 }
 
@@ -311,8 +290,6 @@ int audio_api_module_info_init(void) {
 	while(!feof(fp)) {
 		fscanf(fp,"%[^,],%[^,],%[^,],%d,%[^\n] ", cfg_info.id, cfg_info.module_name, \
             cfg_info.module_start, &cfg_info.cmd, cfg_info.cmd_des);
-        // printf("line: %s, %s, %s, %d, %s\n", cfg_info.id, cfg_info.module_name, cfg_info.module_start, \
-            cfg_info.cmd, cfg_info.cmd_des);
 		audio_api_add_cfg_info(&cfg_info);
 	}
     fclose(fp);

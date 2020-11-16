@@ -55,7 +55,7 @@ int module_register_finish_process(GVariant * parameters)
 	printf("module_register_finished, mod_name is %s.\n", name);
 
 	audio_api_exe_ukui_mod_cmd(name);
-	return 0;
+	return AUDIO_API_OK;
 }
 
 int module_register_process(GVariant * parameters)
@@ -76,7 +76,7 @@ int module_register_process(GVariant * parameters)
     strcpy(mod_reg.dbus_interface, dbus_i);
     mod_reg.need_time = need_t;
     audio_api_module_reg(&mod_reg);
-	return 0;
+	return AUDIO_API_OK;
 }
 
 int cmd_register_process(GVariant * parameters)
@@ -92,7 +92,7 @@ int cmd_register_process(GVariant * parameters)
     strcpy(cmd_reg.cmd_des, cmd_des);
     cmd_reg.cmd = cmd;
     audio_api_cmd_reg(&cmd_reg);
-	return 0;
+	return AUDIO_API_OK;
 }
 
 int cmd_exe_result(GVariant * parameters)
@@ -103,9 +103,10 @@ int cmd_exe_result(GVariant * parameters)
 	// g_variant_get (parameters, "((sis))", &name, &result, &err_des);
 	g_variant_get (parameters, "(sis)", &name, &result, &err_des);
 	printf("cmd_exe_result, name = %s, result = %d, err_des = %s.\n", name, result, err_des);
-
+	g_module_info->exe_result = result;
+	strcpy(g_module_info->res_des, err_des);
 	g_module_info->finished = 1;
-	return 0;
+	return AUDIO_API_OK;
 }
 
 static void handle_method_call (GDBusConnection * connection,
@@ -124,7 +125,7 @@ static void handle_method_call (GDBusConnection * connection,
     } else if (g_strcmp0 (method_name, "mod_register_finish") == 0) {
         ret = module_register_finish_process(parameters);
     } else {
-		ret = -1;
+		ret = AUDIO_API_DBUS_METHOD_NOT_SUPPORT;
         printf("do not support this method.\n");
     }
 	if (ret == 0) {
