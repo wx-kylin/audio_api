@@ -32,4 +32,7 @@
 		"<arg type='s' name='name' direction='in'/>"
 		"<arg name='result' type='i' direction='out'/>"
     "</method>"
-3、实现命令调用函数，函数名通过模块信息注册，注册给audio_api
+3、添加处理响应gsetting的connect
+	gsetting路径：org.ukui.audio_api
+	监听元素：init（bool值，0-1反复变化，监听到变化就说明audio-api已经初始化完成，需要注册）
+4、实现命令调用函数，函数名通过模块信息注册，注册给audio_api

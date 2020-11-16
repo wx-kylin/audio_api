@@ -16,4 +16,5 @@ sudo cp ./lib-audio-helper/libaudio.so /usr/lib/
 	audio_api_read_module_info(void)
 5） 获得版本号信息
 	audio_api_get_verison_info（void）
-5、编译、执行应用程序
+6、安装gsettings配置文件
+7、编译、执行应用程序
