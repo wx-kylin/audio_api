@@ -1,0 +1,19 @@
+#ifndef LIB_AUDIO_API_H
+#define LIB_AUDIO_API_H
+
+#define AUDIO_API_OK 0
+#define AUDIO_API_INPUT_PARAM_ERROR -1
+#define AUDIO_API_MODULE_NAME_NOT_SUPPORT -2
+#define AUDIO_API_MODULE_NAME_LEN 32
+#define AUDIO_API_CMD_LEN 128
+
+extern "C" {
+
+void audio_api_get_verison_info(void);
+int audio_api_read_module_info(char *);
+int audio_api_cmd_execute(char *mod, int cmd);
+void audio_api_show_cmds(void);
+int audio_api_init(void);
+
+}
+#endif // LIB_AUDIO_API_H

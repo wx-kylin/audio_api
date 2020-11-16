@@ -1,0 +1,10 @@
+------------------audio_api_show_info start-----------------
+id: 0, module_name: ukui-control-centor, need_time: 0
+api: , dbus_service: 
+api: , dbus_path: 
+api: , dbus_interface: 
+cmd 0: cmd0
+cmd 1: cmd1
+cmd 3: cmd3
+cmd 4: cmd4
+------------------audio_api_show_info end-----------------

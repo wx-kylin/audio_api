@@ -1,0 +1,8 @@
+1、将lib库拷贝到本地
+2、修改makefile中LIBDIR为本地lib库存放位置；修改makefile中BIN为应用程序名字（此处为main）
+3、将动态库拷贝到lib库：
+sudo cp ./lib-audio-helper/libaudio.so /usr/lib/
+4、编译应用程序
+make
+5、执行应用程序
+./main

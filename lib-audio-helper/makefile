@@ -1,0 +1,47 @@
+# makefile
+TOP_DIR=$(shell pwd)
+LIB=libaudio.so
+OBJS_DIR=debug/obj
+LIB_DIR=debug/lib
+
+CC = gcc
+C_FLAGS=
+INCLUDE_DIR=-I/usr/include/glib-2.0/
+INCLUDE_DIR+=-I/usr/lib/x86_64-linux-gnu/glib-2.0/include/
+LINK_DIR=-L/usr/lib/x86_64-linux-gnu/ -lglib-2.0
+
+TOP_SOURCE = ${wildcard *.c}
+TOP_OBJS = ${patsubst %.c, %.o, $(TOP_SOURCE)}
+
+SUBDIRS=$(shell ls -l | grep ^d | awk '{if($$9 != "debug") if($$9 != "include") print $$9}')
+ALLSUBDIRS=$(shell ls -l | grep ^d | awk '{print $$9}')
+
+export CC TOP_DIR LIB LIB_DIR INCLUDE_DIR
+.PHONY : all clean
+all:$(SUBDIRS) $(TOP_OBJS) DEBUG
+# all: $(TOP_OBJS) DEBUG
+# all: $(SUBDIRS)
+
+$(SUBDIRS):ECHO
+	make -C $@
+
+DEBUG:ECHO
+	make -C debug
+
+ECHO:
+	@echo $(SUBDIRS)
+
+$(TOP_OBJS):%.o:%.c
+	$(CC) $(C_FLAGS) $(INCLUDE_DIR) $(LINK_DIR) -fPIC -c $^ -o $(TOP_DIR)/$(OBJS_DIR)/$@
+	#sudo cp ./org.ukui.audio_api.gschema.xml /usr/share/glib-2.0/schemas/
+	#sudo cp ./libaudio.so /usr/lib/
+
+clean: subdir_clean
+	@-rm -f *.o
+	@-rm $(LIB)
+
+subdir_clean:
+	@for subdir in $(ALLSUBDIRS); \
+    do \
+        make -C $$subdir clean; \
+    done
