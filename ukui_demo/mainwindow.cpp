@@ -5,6 +5,7 @@
 #include <QDebug>
 
 #define AUDIO_API_MODULE_NAME_LEN 32
+#define SETTINGS_AUDIO_API_SCHEMAS "org.ukui.audio_api"
 
 struct module_register {
     char module_name[AUDIO_API_MODULE_NAME_LEN];
@@ -29,6 +30,15 @@ MainWindow::MainWindow(QWidget *parent)
     }
     qDebug() << "call audio_api dbus";
 
+    ukui_module_dbus_reg();
+
+    mAudioApiInitSetting = new QGSettings(SETTINGS_AUDIO_API_SCHEMAS);
+    connect(mAudioApiInitSetting,SIGNAL(changed(QString)),this,SLOT(ukui_module_register(QString)));
+    qDebug() << "end";
+
+}
+void MainWindow::ukui_module_dbus_reg(void)
+{
     QDBusInterface interface( "org.ukui.audio_api", "/org/ukui/audio_api","org.ukui.audio_api", QDBusConnection::sessionBus());
     QDBusReply<int> reply = interface.call( "module_register", "ukui-control-centor", "ukui_module_exe_cmd_api", \
                                                 "org.ukui.module", "/org/ukui/module", "local.ukui_demo.MainWindow", 0);
@@ -36,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
         qDebug( "%d", reply.value());          // prints 4
     } else {
         qDebug() << "fail";
+        return;
     }
 
     reply = interface.call( "cmd_register", "ukui-control-centor", 5, "cmd5");
@@ -44,7 +55,7 @@ MainWindow::MainWindow(QWidget *parent)
     } else {
         qDebug() << "fail";
     }
-    qDebug() << "end";
+
 
     reply = interface.call( "mod_register_finish", "ukui-control-centor");
     if ( reply.isValid() && reply.value() == 0) {
@@ -52,10 +63,15 @@ MainWindow::MainWindow(QWidget *parent)
     } else {
         qDebug() << "fail";
     }
-
-    qDebug() << "end";
-
 }
+
+void MainWindow::ukui_module_register(QString key)
+{
+    qDebug() << "call audio_api dbus in register";
+    ukui_module_dbus_reg();
+    qDebug() << "end";
+}
+
 int MainWindow::ukui_module_exe_cmd_api(int cmd)
 {
     qDebug() << "ukui_module_exe_cmd_api in";
@@ -71,5 +87,8 @@ int MainWindow::ukui_module_exe_cmd_api(int cmd)
 
 MainWindow::~MainWindow()
 {
+    if (mAudioApiInitSetting) {
+        delete mAudioApiInitSetting;
+    }
 }
 
