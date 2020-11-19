@@ -4,6 +4,10 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
 
+TARGET = ukui_demo
+
+TEMPLATE = app
+
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -20,6 +24,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG        += link_pkgconfig
 PKGCONFIG     += gsettings-qt
 
+target.source += $$TARGET
+target.path = /usr/bin/
+INSTALLS +=  \
+            target
+
 SOURCES += \
     main.cpp \
     mainwindow.cpp
@@ -28,6 +37,6 @@ HEADERS += \
     mainwindow.h
 
 # Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+#qnx: target.path = /tmp/$${TARGET}/bin
+#else: unix:!android: target.path = /opt/$${TARGET}/bin
+#!isEmpty(target.path): INSTALLS += target

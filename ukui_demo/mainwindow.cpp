@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     widget = new QWidget(this);
+    widget->setFixedSize(200,200);
     setCentralWidget(widget);
     QString name, api, dbus;
     int need_time = 0;
