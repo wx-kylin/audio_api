@@ -5,7 +5,7 @@
 sudo cp ./lib-audio-helper/libaudio.so /usr/lib/
 4、引用lib_audio_api.h文件
 5、根据需要，调用文件中提供的api
-1）lib初始化接口，在调用其他接口之前需要先调用此接口
+1）lib初始化接口，在调用其他接口之前需要先调用此接口（考虑放到构造函数中？）；
 	audio_api_init（void）
 2）将模块和命令信息打印到标准输出流：
 	audio_api_show_cmds（void）
@@ -16,5 +16,7 @@ sudo cp ./lib-audio-helper/libaudio.so /usr/lib/
 	audio_api_read_module_info(void)
 5） 获得版本号信息
 	audio_api_get_verison_info（void）
+6）在程序关闭之前需要调用audio_api_uninit(void)函数，否则会有内存泄露（考虑放到析构函数中？）
 6、安装gsettings配置文件
-7、编译、执行应用程序
+7、安装配置文件
+8、编译、执行应用程序

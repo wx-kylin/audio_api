@@ -49,4 +49,5 @@ int audio_api_get_module_info(char *file_path);
 
 int audio_api_module_name_cmp(gconstpointer str1, gconstpointer str2);
 int audio_api_cmd_cmp(gconstpointer str1, gconstpointer str2);
+void audio_api_delete_module_info(void);
 #endif

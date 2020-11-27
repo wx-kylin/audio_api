@@ -35,3 +35,8 @@ int audio_api_init(void)
     audio_api_dbus_init();
     return AUDIO_API_OK;
 }
+
+void audio_api_uninit(void)
+{
+    audio_api_delete_module_info();
+}

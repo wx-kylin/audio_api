@@ -19,6 +19,7 @@ int audio_api_read_module_info(char *file_path);
 int audio_api_cmd_execute(char *mod, int cmd);
 void audio_api_show_cmds(void);
 int audio_api_init(void);
+void audio_api_uninit(void);
 
 }
 

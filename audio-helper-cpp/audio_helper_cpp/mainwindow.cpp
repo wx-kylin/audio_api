@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "mythread.h"
 #include "lib_audio_api.h"
+#include "audio_helper_common.h"
 #include <QDebug>
 #include <QGridLayout>
 #include <QFile>
@@ -8,6 +9,13 @@
 MainWindow::MainWindow(QWidget *parent)
     : QDialog(parent)
 {
+    int ret;
+
+    audio_helper_version();
+    audio_api_get_verison_info();
+    ret = audio_api_init();
+    qDebug() << "ret = " << ret;
+
     setWindowTitle(tr("audio_helper"));
     mainWidget = new QWidget(this);
     mainWidget->resize(400, 300);
@@ -77,5 +85,6 @@ void MainWindow::cmdExecute(void)
 
 MainWindow::~MainWindow()
 {
+    audio_api_uninit();
 }
 

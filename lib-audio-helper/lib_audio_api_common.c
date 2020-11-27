@@ -296,3 +296,27 @@ int audio_api_module_info_init(void) {
     audio_api_display_info(g_module_list);
     return AUDIO_API_OK;
 }
+
+void audio_api_delete_module_info(void)
+{
+    GSList *iterator = NULL;
+    GSList *iterator_in = NULL;
+    struct module_info *info;
+    struct module_cmd_info *cmd_info;
+    int i = 0;
+
+    if (g_module_list == NULL) {
+        return;
+    }
+    // for (iterator = g_module_list; iterator; iterator = iterator->next) {
+    //     info = (struct module_info *)iterator->data;
+    //     for (iterator_in = info->list; iterator_in; iterator_in = iterator_in->next) {
+    //         cmd_info = (struct module_cmd_info *)iterator_in->data;
+    //         free(cmd_info);
+    //         iterator_in->data = NULL;
+    //     }
+    //     free(info);
+    //     iterator->data = NULL;
+    // }
+    g_slist_free_full(g_module_list, free);
+}
