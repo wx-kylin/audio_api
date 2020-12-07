@@ -4,7 +4,7 @@
 #include "lib_audio_api.h"
 #include "lib_audio_ukui_api.h"
 
-#define CFG_FILE_PATH "/usr/lib/audio_api_cfg"
+#define CFG_FILE_PATH "~/.config/audio_api_cfg"
 int g_cfg_line_num;
 
 struct module_cmd_info {

@@ -48,26 +48,30 @@ int audio_api_cmd_execute(char *mod, int cmd)
 {
     struct module_info *module_info = NULL;
     // 最多等待5ms
-    int count = 5;
+    int count = 500;
+    int flag = 1;
 
     module_info = audio_api_get_module(mod);
     if (module_info == NULL) {
-        printf("module not support, mod is %s.\n", mod);
+        printf("audio_api_cmd_execute module not support, mod is %s.\n", mod);
         return AUDIO_API_MODULE_NAME_NOT_SUPPORT;
     }
     module_info->cmd_exe = cmd;
     module_info->finished = 0;
     if(!audio_api_module_cmd_sup(mod, module_info->cmd_exe)) {
-        printf("cmd not support, cmd is %d.\n", module_info->cmd_exe);
+        printf("audio_api_cmd_execute cmd not support, cmd is %d.\n", module_info->cmd_exe);
         return AUDIO_API_CMD_NOT_SUPPORT;
     }
     printf("audio_api_cmd_execute.\n");
     audio_api_exe_ukui_mod_cmd(mod);
+
     while (module_info->finished == 0 && count--) {
         sleep(1);
+        printf("audio_api_cmd_execute count is %d.\n", count);
+
     }
     if (module_info->finished == 0) {
-        printf("audio_api_cmd_exe timeout.\n");
+        printf("audio_api_cmd_execute audio_api_cmd_exe timeout.\n");
         return AUDIO_API_CMD_EXE_TIMEOUT;
     } else {
         if (g_module_info->exe_result != 0) {
@@ -109,7 +113,7 @@ int audio_api_get_module_info(char *file_path)
     FILE *fp;
 
     if((fp=fopen(file_path,"w"))==NULL) {
-        printf("Can not open file\n");
+        printf("audio_api_get_module_info Can not open file, file_name is \n", file_path);
         return AUDIO_API_FAIL_OPEN_CONFIG_FILE;
     }
 
@@ -118,8 +122,9 @@ int audio_api_get_module_info(char *file_path)
         info = (struct module_info *)iterator->data;
         fprintf(fp, "id: %d, module_name: %s, need_time: %d\n", i, info->module_name, info->need_time);
         fprintf(fp, "api: %s, dbus_service: %s\n", info->api, info->dbus_service);
-        fprintf(fp, "api: %s, dbus_path: %s\n", info->api, info->dbus_path);
-        fprintf(fp, "api: %s, dbus_interface: %s\n", info->api, info->dbus_interface);
+        fprintf(fp, "dbus_path: %s\n", info->dbus_path);
+        fprintf(fp, "dbus_interface: %s\n", info->dbus_interface);
+        fprintf(fp, "dbus_connected: %d\n", info->dbus_connected);
         i++;
         for (iterator_in = info->list; iterator_in; iterator_in = iterator_in->next) {
             cmd_info = (struct module_cmd_info *)iterator_in->data;
@@ -163,7 +168,7 @@ int audio_api_update_cfg(struct cmd_register *cmd_reg, char *module_start)
 
     strcat(file_name, ".txt");
     if((fp=fopen(file_name,"a"))==NULL) {
-        printf("Can not open file\n");
+        printf("audio_api_update_cfg Can not open file, file name is %s\n", file_name);
         return AUDIO_API_FAIL_OPEN_CONFIG_FILE;
     }
     fprintf(fp, "%d,%s,%s,%d,%s\n", ++g_cfg_line_num, cmd_reg->module_name, \
@@ -200,7 +205,7 @@ int audio_api_cmd_reg(struct cmd_register *cmd_reg)
         printf("module not support.\n");
         return AUDIO_API_MODULE_NAME_NOT_SUPPORT;
     }
-    audio_api_display_info(g_module_list);
+    // audio_api_display_info(g_module_list);
 }
 
 int audio_api_module_reg(struct module_register *mod_reg)
@@ -282,7 +287,7 @@ int audio_api_module_info_init(void) {
     strcat(file_name, ".txt");
     printf("file name is %s.\n", file_name);
     if((fp=fopen(file_name,"r"))==NULL) {
-        printf("Can not open file\n");
+        printf("audio_api_module_info_init Can not open file, file name is %s.\n", file_name);
         return AUDIO_API_FAIL_OPEN_CONFIG_FILE;
     }
 

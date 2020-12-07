@@ -23,12 +23,14 @@ LIBS    +=  -L/usr/lib/ -laudio -L/usr/lib/x86_64-linux-gnu/ -lglib-2.0 -lgio-2.
 
 SOURCES += \
     audio_helper_common.cpp \
+    audioapithread.cpp \
     main.cpp \
     mainwindow.cpp \
     mythread.cpp
 
 HEADERS += \
     audio_helper_common.h \
+    audioapithread.h \
     lib_audio_api.h \
     mainwindow.h \
     mythread.h
@@ -46,7 +48,7 @@ audio_api.files += libaudio.so
 audio_api.path = /usr/lib/
 
 audio_cfg.files += audio_api_cfg.txt
-audio_cfg.path = /usr/lib/
+audio_cfg.path = ~/.config/
 
 INSTALLS += schemes \
     audio_cfg \
