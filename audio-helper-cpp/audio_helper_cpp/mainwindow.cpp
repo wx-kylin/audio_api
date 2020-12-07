@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     getLog = new QPushButton();
     getLog->setText(tr("get_log"));
     filePath = new QLineEdit();
-    filePath->setText(tr("/home/wangxia/git/audio-helper/audio_api_log.txt"));
+    filePath->setText(tr("/home/wangxia/git/audio_api/audio_api_log.txt"));
     log = new QTextEdit();
     name = new QLabel();
     name->setText(tr("mod_name"));
