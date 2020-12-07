@@ -58,7 +58,7 @@ void MainWindow::getLogInfo(void)
 
     path = filePath->text();
     ret = audio_api_read_module_info((char *)path.toStdString().data());
-    QFile file("/home/wangxia/git/audio-helper/audio_api_log.txt");
+    QFile file("/home/wangxia/git/audio_api/audio_api_log.txt");
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug()<<"Can't open the file!"<<endl;
     }

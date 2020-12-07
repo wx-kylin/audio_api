@@ -3,3 +3,4 @@ id,module_name,module_start,cmd,cmd_des
 2,ukui-control-centor,ukui-control-centor,1,cmd1
 3,ukui-control-centor,ukui-control-centor,3,cmd3
 4,ukui-control-centor,ukui-control-centor,4,cmd4
+5,indicator-china-weather,indicator-china-weather,0,cmd0

@@ -41,7 +41,16 @@ DISTFILES += \
 schemes.files += org.ukui.audio_api.gschema.xml
 schemes.path =  /usr/share/glib-2.0/schemas/
 
-INSTALLS += schemes
+# 配置文件、so库的存放文件可以根据需要变更
+audio_api.files += libaudio.so
+audio_api.path = /usr/lib/
+
+audio_cfg.files += audio_api_cfg.txt
+audio_cfg.path = /usr/lib/
+
+INSTALLS += schemes \
+    audio_cfg \
+    audio_api
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
