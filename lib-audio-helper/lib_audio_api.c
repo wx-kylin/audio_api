@@ -6,6 +6,7 @@
 #include "lib_audio_api_dbus.h"
 
 extern GSList *g_module_list;
+char g_cfg_file[128] = "\0";
 
 void audio_api_get_verison_info(void)
 {
@@ -22,11 +23,11 @@ int audio_api_read_module_info(char *file_path)
     return audio_api_get_module_info(file_path);
 }
 
-int audio_api_init(void)
+int audio_api_init(char *cfg_file)
 {
     int ret = 0;
     g_cfg_line_num = 0;
-
+    strcpy(g_cfg_file, cfg_file);
     ret = audio_api_module_info_init();
     if (ret) {
         return ret;

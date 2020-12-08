@@ -9,6 +9,7 @@
 
 GSList *g_module_list = NULL;
 extern struct module_info *g_module_info;
+extern char g_cfg_file[128];
 
 int audio_api_module_cmd_sup(char *mod, int cmd)
 {
@@ -164,11 +165,11 @@ int audio_api_find_module_name(gconstpointer p1, gconstpointer p2) {
 int audio_api_update_cfg(struct cmd_register *cmd_reg, char *module_start)
 {
     FILE *fp;
-    char file_name[64] = CFG_FILE_PATH;
+    // char file_name[64] = CFG_FILE_PATH;
 
-    strcat(file_name, ".txt");
-    if((fp=fopen(file_name,"a"))==NULL) {
-        printf("audio_api_update_cfg Can not open file, file name is %s\n", file_name);
+    // strcat(file_name, ".txt");
+    if((fp=fopen(g_cfg_file,"a"))==NULL) {
+        printf("audio_api_update_cfg Can not open file, file name is %s\n", g_cfg_file);
         return AUDIO_API_FAIL_OPEN_CONFIG_FILE;
     }
     fprintf(fp, "%d,%s,%s,%d,%s\n", ++g_cfg_line_num, cmd_reg->module_name, \
@@ -283,11 +284,11 @@ int audio_api_module_info_init(void) {
 
     struct config_info cfg_info;
     FILE *fp;
-    char file_name[64] = CFG_FILE_PATH;
-    strcat(file_name, ".txt");
-    printf("file name is %s.\n", file_name);
-    if((fp=fopen(file_name,"r"))==NULL) {
-        printf("audio_api_module_info_init Can not open file, file name is %s.\n", file_name);
+    // char file_name[64] = CFG_FILE_PATH;
+    // strcat(file_name, ".txt");
+    printf("file name is %s.\n", g_cfg_file);
+    if((fp=fopen(g_cfg_file,"r"))==NULL) {
+        printf("audio_api_module_info_init Can not open file, file name is %s.\n", g_cfg_file);
         return AUDIO_API_FAIL_OPEN_CONFIG_FILE;
     }
 

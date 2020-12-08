@@ -14,7 +14,7 @@ void AudioApiThread::run()
 
     audio_helper_version();
     audio_api_get_verison_info();
-    ret = audio_api_init();
+    ret = audio_api_init("/home/wangxia/.config/audio_api_cfg.txt");
     qDebug() << "audio_api_init ret = " << ret;
     exec();
     return;
