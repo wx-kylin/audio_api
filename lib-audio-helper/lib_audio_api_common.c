@@ -125,7 +125,6 @@ int audio_api_get_module_info(char *file_path)
         fprintf(fp, "api: %s, dbus_service: %s\n", info->api, info->dbus_service);
         fprintf(fp, "dbus_path: %s\n", info->dbus_path);
         fprintf(fp, "dbus_interface: %s\n", info->dbus_interface);
-        fprintf(fp, "dbus_connected: %d\n", info->dbus_connected);
         i++;
         for (iterator_in = info->list; iterator_in; iterator_in = iterator_in->next) {
             cmd_info = (struct module_cmd_info *)iterator_in->data;
@@ -199,11 +198,11 @@ int audio_api_cmd_reg(struct cmd_register *cmd_reg)
             find_info->list = g_slist_insert_sorted(find_info->list, cmd_info, audio_api_cmd_cmp);
             audio_api_update_cfg(cmd_reg, find_info->module_start);
         } else {
-            printf("already have, no need to reg, cmd is %d.\n", cmd_reg->cmd);
+            printf("audio_api_cmd_reg already have, no need to reg, cmd is %d.\n", cmd_reg->cmd);
             return AUDIO_API_CMD_EXIST;
         }
     } else {
-        printf("module not support.\n");
+        printf("audio_api_cmd_reg module not support.\n");
         return AUDIO_API_MODULE_NAME_NOT_SUPPORT;
     }
     // audio_api_display_info(g_module_list);
@@ -225,7 +224,7 @@ int audio_api_module_reg(struct module_register *mod_reg)
         strcpy(find_info->dbus_interface, mod_reg->dbus_interface);
         find_info->need_time = mod_reg->need_time;
     } else {
-        printf("module not support.\n");
+        printf("audio_api_module_reg module not support.\n");
         return AUDIO_API_MODULE_NAME_NOT_SUPPORT;
     }
     return AUDIO_API_OK;
@@ -251,7 +250,6 @@ static void audio_api_add_cfg_info(struct config_info *cfg_info)
         strcpy(module_info->dbus_path, "\0");
         strcpy(module_info->dbus_service, "\0");
         strcpy(module_info->dbus_interface, "\0");
-        module_info->dbus_connected = 0;
         module_info->finished = 1;
         module_info->need_time = 0;
         module_info->list = NULL;
@@ -284,9 +282,7 @@ int audio_api_module_info_init(void) {
 
     struct config_info cfg_info;
     FILE *fp;
-    // char file_name[64] = CFG_FILE_PATH;
-    // strcat(file_name, ".txt");
-    printf("file name is %s.\n", g_cfg_file);
+    // printf("file name is %s.\n", g_cfg_file);
     if((fp=fopen(g_cfg_file,"r"))==NULL) {
         printf("audio_api_module_info_init Can not open file, file name is %s.\n", g_cfg_file);
         return AUDIO_API_FAIL_OPEN_CONFIG_FILE;

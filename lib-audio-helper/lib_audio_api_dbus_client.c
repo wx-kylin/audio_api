@@ -10,7 +10,7 @@ int *pull_thread(void *arg)
 {
     pthread_t newThid;
     newThid = pthread_self();
-    printf("this is a new thread,thread ID = %lu\n",newThid);
+    // printf("this is a new thread,thread ID = %lu\n",newThid);
     system(g_module_info->module_start);
     exit(0);
 }
@@ -19,11 +19,11 @@ void audio_api_pull_module(void)
 {
     int iRet = 0;
     pthread_t thid;
-    printf("my thread,ID is %lu\n",pthread_self());
+    // printf("my thread,ID is %lu\n",pthread_self());
     iRet = pthread_create(&thid,NULL,(void *)pull_thread,NULL);
     if(iRet != 0)
     {
-        printf("thread creation failed\n");
+        printf("audio_api_pull_module thread creation failed\n");
         return;
     }
     // system(g_module_info->module_start);
@@ -40,11 +40,11 @@ void audio_api_cmd_exe_callback (GObject * gobj, GAsyncResult * res, gpointer us
 	result = g_dbus_proxy_call_finish (bproxy, res, &error);
     g_object_unref(bproxy);
 	g_variant_get (result, "(i)", &str);
-	g_print ("result from Server %d\n", str);
+	g_print ("audio_api_cmd_exe_callback result from Server %d\n", str);
     if (str == 0) {
         g_module_info->finished = 1;
     } else {
-        printf("module not started yet, will start module first.\n");
+        printf("audio_api_cmd_exe_callback module not started yet, will start module first.\n");
         // 拉起应用
         audio_api_pull_module();
     }
@@ -73,14 +73,13 @@ void audio_api_exe_ukui_mod_cmd(char *mod)
     bproxy = g_dbus_proxy_new_for_bus_sync(G_BUS_TYPE_SESSION, G_DBUS_PROXY_FLAGS_NONE, NULL, module_info->dbus_service, \
         module_info->dbus_path, module_info->dbus_interface, NULL, &error);
     if (bproxy == NULL) {
-        printf("will start module111 %s.\n", module_info->module_start);
+        printf("audio_api_exe_ukui_mod_cmd will start module %s.\n", module_info->module_start);
         audio_api_pull_module();
         return ;
     }
-    printf("service: %s, path: %s, interface: %s.\n", module_info->dbus_service, \
-        module_info->dbus_path, module_info->dbus_interface);
-    printf("api: %s, cmd: %d.\n", module_info->api, module_info->cmd_exe);
-    module_info->dbus_connected = 1;
+    // printf("service: %s, path: %s, interface: %s.\n", module_info->dbus_service, \
+    //     module_info->dbus_path, module_info->dbus_interface);
+    // printf("api: %s, cmd: %d.\n", module_info->api, module_info->cmd_exe);
 
 	g_dbus_proxy_call(bproxy, module_info->api, g_variant_new("(i)", module_info->cmd_exe), \
         G_DBUS_CALL_FLAGS_NONE, -1, NULL, (GAsyncReadyCallback) audio_api_cmd_exe_callback, NULL);

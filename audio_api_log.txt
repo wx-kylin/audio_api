@@ -3,16 +3,13 @@ id: 0, module_name: indicator-china-weather, need_time: 0
 api: , dbus_service: 
 dbus_path: 
 dbus_interface: 
-dbus_connected: 0
 cmd 0: cmd0
 id: 1, module_name: ukui-control-centor, need_time: 0
-api: ukui_module_exe_cmd_api, dbus_service: org.ukui.module
-dbus_path: /org/ukui/module
-dbus_interface: local.ukui_demo.MainWindow
-dbus_connected: 0
+api: , dbus_service: 
+dbus_path: 
+dbus_interface: 
 cmd 0: cmd0
 cmd 1: cmd1
 cmd 3: cmd3
 cmd 4: cmd4
-cmd 5: cmd5
 ------------------audio_api_show_info end-----------------

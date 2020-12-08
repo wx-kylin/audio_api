@@ -19,7 +19,6 @@ struct module_info {
     char dbus_service[32];
     char dbus_path[32];
     char dbus_interface[32];
-    int dbus_connected;
     int cmd_exe;
     volatile int finished;
     int need_time;

@@ -29,9 +29,8 @@ prebuild:
         INCLUDE_DIR+=$(ARM_INCLUDE)
 	LINK_DIR+=$(ARM_LINK_DIR)
     else
-	INCLUDE_DIR+=$(X86_INCLUDE)
-	LINK_DIR+=$(X86_LINK_DIR)
-
+        INCLUDE_DIR+=$(X86_INCLUDE)
+        LINK_DIR+=$(X86_LINK_DIR)
     endif
 $(SUBDIRS):ECHO
 	make -C $@
