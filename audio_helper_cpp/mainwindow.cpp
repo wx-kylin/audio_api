@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     name = new QLabel();
     name->setText(tr("mod_name"));
     mod_name = new QLineEdit();
-    mod_name->setText("ukui-control-centor");
+    mod_name->setText("ukui_demo");
     cmd = new QLabel();
     cmd->setText(tr("cmd_name"));
     cmd_name = new QLineEdit();

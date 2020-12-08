@@ -4,7 +4,7 @@ api: , dbus_service:
 dbus_path: 
 dbus_interface: 
 cmd 0: cmd0
-id: 1, module_name: ukui-control-centor, need_time: 0
+id: 1, module_name: ukui_demo, need_time: 0
 api: , dbus_service: 
 dbus_path: 
 dbus_interface: 

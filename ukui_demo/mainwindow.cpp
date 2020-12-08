@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
 void MainWindow::ukui_module_dbus_reg(void)
 {
     QDBusInterface interface( "org.ukui.audio_api", "/org/ukui/audio_api","org.ukui.audio_api", QDBusConnection::sessionBus());
-    QDBusReply<int> reply = interface.call( "module_register", "ukui-control-centor", "ukui_module_exe_cmd_api", \
+    QDBusReply<int> reply = interface.call( "module_register", "ukui_demo", "ukui_module_exe_cmd_api", \
                                                 "org.ukui.module", "/org/ukui/module", "local.ukui_demo.MainWindow", 0);
     if ( reply.isValid() && reply.value() == 0) {
         qDebug( "%d", reply.value());          // prints 4
@@ -50,7 +50,7 @@ void MainWindow::ukui_module_dbus_reg(void)
         return;
     }
 
-    reply = interface.call( "cmd_register", "ukui-control-centor", 5, "cmd5");
+    reply = interface.call( "cmd_register", "ukui_demo", 5, "cmd5");
     if ( reply.isValid() && reply.value() == 0) {
         qDebug( "%d", reply.value());          // prints 4
     } else {
@@ -58,7 +58,7 @@ void MainWindow::ukui_module_dbus_reg(void)
     }
 
 
-    reply = interface.call( "mod_register_finish", "ukui-control-centor");
+    reply = interface.call( "mod_register_finish", "ukui_demo");
     if ( reply.isValid() && reply.value() == 0) {
         qDebug( "%d", reply.value());          // prints 4
     } else {
@@ -77,7 +77,7 @@ int MainWindow::ukui_module_exe_cmd_api(int cmd)
 {
     qDebug() << "ukui_module_exe_cmd_api in";
     QDBusInterface interface( "org.ukui.audio_api", "/org/ukui/audio_api","org.ukui.audio_api", QDBusConnection::sessionBus());
-    QDBusReply<int> reply = interface.call( "cmd_execute_result", "ukui-control-centor", 0, "ok");
+    QDBusReply<int> reply = interface.call( "cmd_execute_result", "ukui_demo", 0, "ok");
     if ( reply.isValid() && reply.value() == 0) {
         qDebug( "%d", reply.value());          // prints 4
     } else {
