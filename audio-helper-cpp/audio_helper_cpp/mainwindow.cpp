@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QGridLayout>
 #include <QFile>
+#include <QDir>
 
 MainWindow::MainWindow(QWidget *parent)
     : QDialog(parent)
@@ -19,7 +20,12 @@ MainWindow::MainWindow(QWidget *parent)
     getLog = new QPushButton();
     getLog->setText(tr("get_log"));
     filePath = new QLineEdit();
-    filePath->setText(tr("/home/wangxia/git/audio_api/audio_api_log.txt"));
+
+    // 偷懒写死了，需要用户输入
+    QString logFile = QDir::homePath();
+    logFile += "/git/audio_api/audio_api_log.txt";
+    filePath->setText(tr(logFile.toStdString().data()));
+
     log = new QTextEdit();
     name = new QLabel();
     name->setText(tr("mod_name"));
@@ -55,9 +61,9 @@ void MainWindow::getLogInfo(void)
 
     path = filePath->text();
     ret = audio_api_read_module_info((char *)path.toStdString().data());
-    QFile file("/home/wangxia/git/audio_api/audio_api_log.txt");
+    QFile file(path);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug()<<"Can't open the file!"<<endl;
+        qDebug()<<"MainWindow::getLogInfo Can't open the file!"<<endl;
     }
     while(!file.atEnd()) {
         QByteArray line = file.readLine();
