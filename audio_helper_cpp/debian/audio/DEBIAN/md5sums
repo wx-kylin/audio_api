@@ -1,0 +1,7 @@
+764fa856c0cdc4214ec9614f34d173b2  home/wangxia/.config/audio_api_cfg.txt
+dfeef3e5c6ecc7e83f2e57e5ad26dc7b  usr/bin/audio_api
+323e9bdffd923a6cb66524e63dd59d94  usr/lib/libaudio.so
+915b443835413335f13ab83345515458  usr/share/doc/audio/README.Debian
+938bdc41312a85c37a194fa860fc4c69  usr/share/doc/audio/changelog.Debian.gz
+d6856b0269426abdd8994cca46a24b1f  usr/share/doc/audio/copyright
+3f0505076139bc22464bb5310e3fb7b5  usr/share/glib-2.0/schemas/org.ukui.audio_api.gschema.xml

@@ -1,0 +1,9 @@
+<schemalist>
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.ukui.audio_api" path="/org/ukui/audio_api/">
+    <key name="init" type="b">
+      <default>false</default>
+      <summary>audio_api init</summary>
+      <description>status used to tell ukui modules audio api init again</description>
+    </key>
+  </schema>
+</schemalist>

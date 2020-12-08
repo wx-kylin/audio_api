@@ -1,0 +1,11 @@
+Package: audio
+Version: 1.0-1
+Architecture: amd64
+Maintainer: wangxia <wangxia@kylinos.cn>
+Installed-Size: 89
+Depends: libc6 (>= 2.14), libgcc-s1 (>= 3.0), libglib2.0-0 (>= 2.16.0), libqt5core5a (>= 5.12.2), libqt5widgets5 (>= 5.0.2), libstdc++6 (>= 5.2), dconf-gsettings-backend | gsettings-backend
+Section: unknown
+Priority: optional
+Homepage: <insert the upstream URL, if relevant>
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>

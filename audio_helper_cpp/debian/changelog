@@ -1,0 +1,5 @@
+audio (1.0-1) unstable; urgency=medium
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- wangxia <wangxia@kylinos.cn>  Tue, 08 Dec 2020 19:42:04 +0800

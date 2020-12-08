@@ -1,0 +1,13 @@
+Package: audio-dbgsym
+Package-Type: ddeb
+Source: audio
+Version: 1.0-1
+Auto-Built-Package: debug-symbols
+Architecture: amd64
+Maintainer: wangxia <wangxia@kylinos.cn>
+Installed-Size: 361
+Depends: audio (= 1.0-1)
+Section: debug
+Priority: optional
+Description: debug symbols for audio
+Build-Ids: a1135d8a82ff0675d414fe1cdcf666f9b4aef58a f06e117cf3e03f179a171e71e72fbf06c2bc39cc
