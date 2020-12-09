@@ -48,8 +48,8 @@ struct module_info *audio_api_get_module(char *mod)
 int audio_api_cmd_execute(char *mod, int cmd)
 {
     struct module_info *module_info = NULL;
-    // 最多等待5ms
-    int count = 500;
+    // 最多等待50s
+    int count = 50;
     int flag = 1;
 
     module_info = audio_api_get_module(mod);

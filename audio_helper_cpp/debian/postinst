@@ -3,6 +3,15 @@
 #
 # see: dh_installdeb(1)
 
+for file in `ls /home`
+do
+    if [ -f "/home/"$file"/.config/audio_api_cfg.txt" ]
+    then
+        echo sudo chmod 666 /home/"$file"/.config/audio_api_cfg.txt
+        chmod 666 /home/"$file"/.config/audio_api_cfg.txt
+    fi
+done
+
 set -e
 
 # summary of how this script can be called:
@@ -16,7 +25,6 @@ set -e
 #          <conflicting-package> <version>
 # for details, see https://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
-
 
 case "$1" in
     configure)
